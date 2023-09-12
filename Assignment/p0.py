@@ -48,7 +48,7 @@ def main():
 
 def load_datasets(batch_size, world_size, rank):
   # Task 1: Choose an appropriate directory to download the datasets into
-  root_dir = None
+  root_dir = os.getcwd()
 
   extra_dataset = SVHN(root=root_dir, split='extra', download=True, transform=ToTensor())
   train_dataset = SVHN(root=root_dir, split='train', download=True, transform=ToTensor())
@@ -154,10 +154,16 @@ def run_epochs(epochs, lr, model, train_loader, val_loader, rank, opt_func=torch
             images, labels = batch 
             # Task 1: Complete training loop
             # Step 1 Get model prediction, i.e. run the fwd pass
+            pred_y = model(images)
             # Step 2 Calculate cross entropy loss between out and labels
+            loss_function = nn.CrossEntropyLoss()
+            loss = loss_function(pred_y, labels)
             # Step 3 Reset the gradients to zero
+            model.zero_grad()
             # Step 4 Run the backward pass
+            loss.backward()
             # Step 5 Apply gradients using optimizer
+            optimizer.step()
         # Validation phase
         result = evaluate(model, val_loader)
         epoch_report(epoch, result)
