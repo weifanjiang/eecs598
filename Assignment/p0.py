@@ -68,7 +68,7 @@ def load_datasets(batch_size, world_size, rank):
                                              shuffle=False,
                                              num_workers=0,
                                              pin_memory=True)
-  val_loader = DataLoader(val_ds, batch_size*2, num_workers=4, pin_memory=True)
+  val_loader = DataLoader(val_ds, batch_size*2, num_workers=2, pin_memory=True)
   
   return train_loader, val_loader
   
